@@ -1,0 +1,60 @@
+version: '3'
+
+services:
+  yb-node-1:
+    image: raw-yb-2.17.2.0
+    container_name: yb-node-1
+    networks:
+      yugabyte_network:
+        ipv4_address: 172.28.1.101
+    volumes:
+      - ./ssh-key:/root/.ssh
+      - ./node1:/opt/node
+    ports:
+      - "7100:7100"
+      - "9100:9100"
+      - "5433:5433"
+      - "9042:9042"
+      - "17000:7000"
+    command: ["/opt/node/start.sh"]
+    
+  yb-node-2:
+    image: raw-yb-2.17.2.0
+    container_name: yb-node-2
+    networks:
+      yugabyte_network:
+        ipv4_address: 172.28.1.102
+    volumes:
+      - ./ssh-key:/root/.ssh
+      - ./node2:/opt/node
+    ports:
+      - "7101:7100"
+      - "9101:9100"
+      - "5434:5433"
+      - "9043:9042"
+      - "17001:7000"
+    command: ["/opt/node/start.sh"]
+    
+  yb-node-3:
+    image: raw-yb-2.17.2.0
+    container_name: yb-node-3
+    networks:
+      yugabyte_network:
+        ipv4_address: 172.28.1.103
+    volumes:
+      - ./ssh-key:/root/.ssh
+      - ./node3:/opt/node
+    ports:
+      - "7102:7100"
+      - "9102:9100"
+      - "5435:5433"
+      - "9044:9042"
+      - "17002:7000"
+    command: ["/opt/node/start.sh"]
+
+networks:
+  yugabyte_network:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/16
